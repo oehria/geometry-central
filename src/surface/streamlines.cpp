@@ -245,10 +245,15 @@ std::vector<SurfacePoint> traceStreamline(ManifoldSurfaceMesh& mesh, IntrinsicGe
                                    forwardLimit - forwardLength, nSym, vCurr, printSteps);
     heCurr = result.crossHe, tCurr = result.tCross;
     forwardLength += result.traceLength;
+
+    vCurr = result.traceDir; //Annika added to fix turns
+
+
     if (result.terminated) forwardStreamline.push_back(result.endPoint);
 
     if (nSym > 1 && heCurr != Halfedge()) vCurr = geom.transportVectorsAcrossHalfedge[heCurr] * vCurr;
     if (opt.verbosity > 0) std::cout << "forwardLength: " << forwardLength << std::endl;
+
   }
 
   vCurr = -vStart;
@@ -275,6 +280,9 @@ std::vector<SurfacePoint> traceStreamline(ManifoldSurfaceMesh& mesh, IntrinsicGe
                                    backwardLimit - backwardLength, nSym, vCurr, printSteps);
     heCurr = result.crossHe, tCurr = result.tCross;
     backwardLength += result.traceLength;
+
+    vCurr = result.traceDir; //Annika added to fix turns??
+
     if (result.terminated) reverseStreamline.push_back(result.endPoint);
 
     if (nSym > 1 && heCurr != Halfedge()) vCurr = geom.transportVectorsAcrossHalfedge[heCurr] * vCurr;
